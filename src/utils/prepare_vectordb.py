@@ -45,4 +45,9 @@ class PrepareVectorDB:
             print("Number of Loaded Documents:", doc_counter)
             print("Number of pages:" len(docs),"\n\n")
         return docs
-    def 
+    def __chunk_documents(self,docs:List) -> List:
+        print("Chunking documents...")
+        chunked_documents = self.text_splitter.split_documents(docs)
+        print("Number of chunks:",len(chunked_documents),"\n\n")
+        return chunked_documents
+    
