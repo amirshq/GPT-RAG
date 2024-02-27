@@ -50,4 +50,16 @@ class PrepareVectorDB:
         chunked_documents = self.text_splitter.split_documents(docs)
         print("Number of chunks:",len(chunked_documents),"\n\n")
         return chunked_documents
-    
+    def prepare_and_save_vectordb(self):
+        docs = self.__load_all_documents()
+        chunked_documents = self.__chunk_documents(docs)
+        print("Preparing vectordb...")
+        vectordb = Chroma.from_documents(
+            documents = chunked_documents,
+            embedding = self.embedding,
+            Persist_directory = self.persist_directory
+        )
+        print("VectorDB is created and saved.")
+        print("Number os vectors in vectordb:"
+            vectordb.__collection.count(),"\n\n")
+        return vectordb
