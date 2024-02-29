@@ -44,7 +44,7 @@ class LoadConfig:
 
         #clean up the upload documents vectordb if it exists
         self.create_directory(self.persist_directory)
-        self.remove_directory(Self.custom_perist_directory)
+        self.remove_directory(self.custom_perist_directory)
     
     def load_openai_cfg(self):
         openai.api_type = os.getenv("OPENAI_API_TYPE")
