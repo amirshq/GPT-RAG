@@ -29,4 +29,17 @@ class LoadConfig:
         self.chunk_overlap = app_config["splitter_config"]["chunk_overlap"]
 
         #summarization configs
+        self.max_final_token = app_config["summarizer_config"]["max_final_token"]
+        self.character_overlap = app_config["summarizer_config"]["character_overlap"]
+        self.token_threshold = app_config["summarizer_config"]["token_threshold"]
+        self.summarizer_llm_system_role = app_config["summarizer_config"]["summarizer_llm_system_role"]
+        self.final_summarizer_llm_system_role = app_config["summarizer_config"]["final_summarizer_llm_system_role"]
+        self.temperature = app_config["llm_config"]["temperature"]
+
+        #memory configs
+        self.number_of_q_a_pairs = app_config["memory"]["number_of_q_a_pairs"]
+
+        #Load OpenAI API Key
+        self.load_openai_cfg()
+
         
