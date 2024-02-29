@@ -42,4 +42,28 @@ class LoadConfig:
         #Load OpenAI API Key
         self.load_openai_cfg()
 
+        #clean up the upload documents vectordb if it exists
+        self.create_directory(self.persist_directory)
+        self.remove_directory(Self.custom_perist_directory)
+    
+    def load_openai_cfg(self):
+        openai.api_type = os.getenv("OPENAI_API_TYPE")
+        openai_api_base = os.getenv("OPENAI_API_BASE")
+        openai_api_version = os.getenv("OPENAI_API_VERSION")
+        openai.api_key = os.getenv("OPENAI_API_KEY")
+    def create_directory(self,directory_path:str):
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+    def remove_directory(self,directory_path:str):  
+        if os.path.exists(directory_path):
+            try:
+                shutil.rmtree(directory_path)
+                print(
+                    f"The directory {directory_path} has been removed")
+            except OSError as e:
+                print(f"Errir: {e}")
+        else:
+            print(f"The directory {directory_path} does not exist")
+
         
+
