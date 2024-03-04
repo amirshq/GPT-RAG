@@ -23,6 +23,15 @@ class ChatBot:
                 chatbot.append(
                     (message, f"VectorDB does not exist. Please first execute the 'upload_data_manually.py' module."))
                 return "", chatbot, None
-
+        elif data_type == "Upload doc: Process for RAG":
+            if os.path.exists(APPCFG.custom_perist_directory):
+                vectordb = Chroma(persist_directory=APPCFG.custom_perist_directory,
+                                  embedding_function=APPCFG.embedding_model)
+            else:
+                chatbot.append(
+                    (message, f"VectorDB does not exist. Please first execute the 'upload' button."))
+                return "", chatbot, None
     
             )
+        docs = vectordb.similarity_search(message, k=APPCFG.k)
+        question = 
