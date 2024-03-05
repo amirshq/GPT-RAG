@@ -14,9 +14,11 @@ URL = "https://github.com/amirshq/GPT-RAG"
 """
     This module contains the ChatBot class which is responsible for responding to user queries.
     This code defines a part of a chatbot system, focusing on a method that responds to user 
-    messages based on the type of document interaction requested. The method decides what action 
-    to take based on whether the user wants to work with a preprocessed document or upload a document 
-    for processing. 
+    messages based on the type of document interaction requested. 
+
+        "The method decides what action to take based on whether the user wants to work with 
+        a preprocessed document or upload a document for processing." 
+
     It checks if certain directories exist on the file system
     (to confirm if the necessary data or configuration is available) and uses these checks 
     to initialize a vector database for processing the documents, or informs the user if 
@@ -65,4 +67,22 @@ class ChatBot:
         chatbot.append((message, response["choices"][0]["message"]["content"]))
         time.sleep(2)
         return "",chatbot, retrieved_content
-    
+    @staticmethod
+    def clean_refrences(documents: List) -> str:
+        """
+        This clean references method is responsible for cleaning the Retrieved documents before 
+        converting into vector 
+
+        """
+        server_url = "http://localhost:8000"
+        documents = [str(x)+"\n\n" for x in documents]
+        markdown_documents = ""
+        counter = 1 
+        for doc in documents:
+            content, metadata = re.match(
+                r"page_content=(.*), (metadata=\{.*\})", doc).groups()
+            metadata = metadata.split('=',1)[1]
+            metadata = ast.literal_eval(metadata)
+
+            #Decode newlines and other escape characters
+            content = bytes(content, "utf-8").decode("unicode_escape")
