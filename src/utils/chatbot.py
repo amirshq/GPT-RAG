@@ -86,3 +86,38 @@ class ChatBot:
 
             #Decode newlines and other escape characters
             content = bytes(content, "utf-8").decode("unicode_escape")
+
+            #Replace escaped newlines with actual newlines
+            content = re.sub(r"\\n", "\n", content)
+            #Remove special tokens  
+            content = re.sub(r'\s*<E0S>\s*', '', content)
+            #Remove any remaining multiple spaces 
+            content = re.sub(r'\s+', ' ', content).strip()
+
+            #Decode HTML entities
+            content = html.unescape(content)
+
+            #Replace incorrect unicode characters wiht correct ones
+            content = content.encode('latin1').decode('utf-8','ignore')
+
+            #Remove or replace any remaining special characters
+            # You can modify this to suit your needs
+            content = re.sub(r'�', ' ', content)
+            content = re.sub(r'â', '-', content)
+            content = re.sub(r'â', '∈', content)
+            content = re.sub(r'Ã', '×', content)
+            content = re.sub(r'ï¬', 'fi', content)
+            content = re.sub(r'â', '∈', content)
+            content = re.sub(r'Â·', '·', content)
+            content = re.sub(r'ï¬', 'fl', content)
+
+            pdf_url = f"{server_url}/{os.path.basename(metadata_dict['source'])}"
+
+            # Append cleaned content to the markdown string with two newlines between documents
+            markdown_documents += f"# Retrieved content {counter}:\n" + content + "\n\n" + \
+                f"Source: {os.path.basename(metadata_dict['source'])}" + " | " +\
+                f"Page number: {str(metadata_dict['page'])}" + " | " +\
+                f"[View PDF]({pdf_url})" "\n\n"
+            counter += 1
+
+        return markdown_documents
