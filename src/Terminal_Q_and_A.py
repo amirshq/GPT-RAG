@@ -32,5 +32,16 @@ while True:
     question = "#User new question\n" + question
     docs = vectordb.similarity_search(question, k=APPCFG.k)
     retrieved_docs_page_content: List[Tuple] = [
-        
-    ]
+        str(x.page_content)+"\n\n" for x in docs]
+    retrieved_docs_str = "# Retrieved document:\n\n" + str(retrieved_docs_page_content)
+    prompt = retrieved_docs_str + "\n\n" + question
+    response = openai.ChatCompletion.create(
+        engine = APPCFG.llm_engine,
+        messages = [
+            {"role": "system", "content": APPCFG.llm_system_role},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    print(response['choices'][0]['message']['content'])
+                                            
+
