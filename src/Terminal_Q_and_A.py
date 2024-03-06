@@ -23,3 +23,14 @@ embedding = OpenAIEmbeddings()
 vectordb = chroma(persist_directory=APPCFG.persist_directory,embedding_function=embedding)
 
 print("Number of vectors in the vector database: ",vectordb._collection.count())
+
+#Prepare the RAG with OpenAI in terminal 
+while True:
+    question = input("Ask a question or press 'q' to exit: ")
+    if question.lower() == 'q':
+        break
+    question = "#User new question\n" + question
+    docs = vectordb.similarity_search(question, k=APPCFG.k)
+    retrieved_docs_page_content: List[Tuple] = [
+        
+    ]
